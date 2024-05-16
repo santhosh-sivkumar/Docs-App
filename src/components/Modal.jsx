@@ -11,7 +11,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   minWidth: 250,
   borderRadius: "1rem",
-  bgcolor: "rgba(255,255,255,.7)",
+  bgcolor: "white",
   border: "2px solid gray",
   boxShadow: 24,
   padding: "2rem",
@@ -47,6 +47,13 @@ export default function ModalComponent({
   setTitle,
   addData,
 }) {
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent the default Enter key action
+      addData();
+      handleClose(); // Manually submit the form
+    }
+  };
   return (
     <div>
       <Modal
@@ -58,6 +65,7 @@ export default function ModalComponent({
       >
         <Box sx={style}>
           <CssTextField
+            onKeyDown={handleKeyDown}
             sx={{
               width: "100%",
             }}
@@ -68,6 +76,7 @@ export default function ModalComponent({
           />
 
           <Button
+            title="Add"
             variant="outline"
             sx={{
               marginTop: "2rem",

@@ -51,7 +51,6 @@ const Docs = () => {
       docsDesc: "",
     })
       .then(() => {
-        alert("Data Added");
         handleClose();
       })
       .catch(() => {
