@@ -1,7 +1,7 @@
 import "./App.css";
 import EditDoc from "./components/EditDoc";
 
-import Docs from "./components/docs";
+import Docs from "./components/Docs";
 import {
   createBrowserRouter,
   RouterProvider,
