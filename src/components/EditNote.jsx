@@ -74,7 +74,7 @@ const EditNote = (props) => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          minWidth: 100,
+          minWidth: 300,
           borderRadius: ".5rem",
           border: "0",
           bgcolor: "#fff",
