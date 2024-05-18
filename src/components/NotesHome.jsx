@@ -159,7 +159,7 @@ const NotesHome = () => {
               >
                 <Stack
                   sx={{
-                    border: "1px solid #e0e0e0",
+                    border: "2px solid #e0e0e0",
                     borderRadius: "10px",
                     backgroundColor: "transparent",
                     padding: "1rem ",
@@ -167,7 +167,6 @@ const NotesHome = () => {
                     overflowY: "auto",
                     position: "relative",
                     ":hover": {
-                      border: "0",
                       boxShadow:
                         "0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149)",
                     },
