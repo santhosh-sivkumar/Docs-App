@@ -1,44 +1,20 @@
 /* eslint-disable react/prop-types */
-import { styled } from "@mui/material/styles";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import CssTextField from "./CssTextField";
 
-const style = {
+export const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   minWidth: 250,
   borderRadius: "1rem",
-  bgcolor: "white",
-  border: "2px solid gray",
-  boxShadow: 24,
+  bgcolor: "#fff",
   padding: "2rem",
   textAlign: "center",
 };
-
-const CssTextField = styled(TextField)({
-  "& label.Mui-focused": {
-    color: "gray",
-  },
-  "& .MuiInput-underline:after": {
-    border: "2px solid",
-    borderBottomColor: "#B2BAC2",
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "gray",
-      border: "2px solid gray",
-    },
-    "&:hover fieldset": {
-      borderColor: "gray",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "gray",
-    },
-  },
-});
 
 export default function ModalComponent({
   open,
@@ -47,13 +23,6 @@ export default function ModalComponent({
   setTitle,
   addData,
 }) {
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); // Prevent the default Enter key action
-      addData();
-      handleClose(); // Manually submit the form
-    }
-  };
   return (
     <div>
       <Modal
@@ -62,10 +31,12 @@ export default function ModalComponent({
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
+        sx={{
+          transformStyle: "preserve-3d",
+        }}
       >
         <Box sx={style}>
           <CssTextField
-            onKeyDown={handleKeyDown}
             sx={{
               width: "100%",
             }}
@@ -76,7 +47,6 @@ export default function ModalComponent({
           />
 
           <Button
-            title="Add"
             variant="outline"
             sx={{
               marginTop: "2rem",

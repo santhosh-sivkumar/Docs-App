@@ -1,7 +1,5 @@
-/* eslint-disable react/prop-types */
-
 import { useState } from "react";
-import Modal from "./Modal";
+import ModalComponent from "./ModalComponent";
 import {
   Box,
   Button,
@@ -26,12 +24,15 @@ import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import EditNote from "./EditNote";
 
-const Docs = () => {
+const NotesHome = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const [openEditDocModel, setOpenEditDocModel] = useState(false);
+  const [docId, setDocId] = useState("");
+  const [activeId, setActiveId] = useState(null);
   const [title, setTitle] = useState("");
 
   const [docsData, setDocsData] = useState([]);
@@ -45,13 +46,14 @@ const Docs = () => {
     if (title === "") {
       return;
     }
-
+    handleClose();
     addDoc(collectionRef, {
       title: title,
       docsDesc: "",
     })
       .then(() => {
-        handleClose();
+        //alert("Cannot add data");
+        console.log("Added title: " + title);
       })
       .catch(() => {
         alert("Cannot add data");
@@ -69,9 +71,9 @@ const Docs = () => {
     });
   };
 
-  function getId(id) {
-    navigate(`/editDoc/${id}`);
-  }
+  // function getId(id) {
+  //   navigate(`/EditNote/${id}`);
+  // }
 
   useEffect(() => {
     if (isMounted.current) {
@@ -88,9 +90,12 @@ const Docs = () => {
       docsDesc: "",
     });
   }
-
+  const handleOnClick = (id) => {
+    setDocId(id);
+    setOpenEditDocModel(!openEditDocModel);
+  };
   return (
-    <Box sx={{ background: "rgba(0, 0, 0, 0.04)", minHeight: "100vh" }}>
+    <Box sx={{ background: "#fff", minHeight: "100vh" }}>
       <Container
         className="docsContainer"
         sx={{
@@ -107,7 +112,7 @@ const Docs = () => {
             color: "gray",
           }}
         >
-          DOCS APP
+          Keep Notes
         </Typography>
         <Button
           variant="outline"
@@ -117,15 +122,23 @@ const Docs = () => {
           onClick={handleOpen}
           startIcon={<AddIcon />}
         >
-          Add a Document
+          Take a note
         </Button>
-        <Modal
+        <ModalComponent
           open={open}
           title={title}
           setTitle={setTitle}
           addData={addData}
           handleClose={handleClose}
         />
+        {openEditDocModel && (
+          <EditNote
+            setActiveId={setActiveId}
+            setOpenEditDocModel={setOpenEditDocModel}
+            openEditDocModel={openEditDocModel}
+            id={docId}
+          />
+        )}
         <Grid
           container
           spacing={2}
@@ -136,16 +149,28 @@ const Docs = () => {
         >
           {docsData.map((docData, index) => {
             return (
-              <Grid item key={index} xs={4}>
+              <Grid
+                item
+                key={index}
+                xs={4}
+                className={`edit__model ${
+                  activeId == docData.id ? "active" : ""
+                }`}
+              >
                 <Stack
                   sx={{
-                    border: "2px solid gray",
+                    border: "1px solid #e0e0e0",
                     borderRadius: "10px",
                     backgroundColor: "transparent",
                     padding: "1rem ",
-                    height: "6rem",
+                    height: "10rem",
                     overflowY: "auto",
                     position: "relative",
+                    ":hover": {
+                      border: "0",
+                      boxShadow:
+                        "0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149)",
+                    },
                   }}
                 >
                   <Stack justifyContent={"center"}>
@@ -172,18 +197,25 @@ const Docs = () => {
                         right: ".5rem",
                       }}
                     >
-                      <IconButton aria-label="delete">
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => {
+                          handleOnClick(docData.id);
+                          setActiveId(docData.id);
+                        }}
+                      >
                         <BorderColorOutlinedIcon
-                          onClick={() => getId(docData.id)}
                           sx={{
                             cursor: "pointer",
                           }}
                           fontSize="small"
                         />
                       </IconButton>
-                      <IconButton aria-label="delete">
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => deleteItem(docData.id)}
+                      >
                         <DeleteOutlineOutlinedIcon
-                          onClick={() => deleteItem(docData.id)}
                           sx={{
                             cursor: "pointer",
                           }}
@@ -192,13 +224,18 @@ const Docs = () => {
                       </IconButton>
                     </Stack>
                   </Stack>
-
                   <Typography
+                    onClick={() => {
+                      handleOnClick(docData.id);
+                      setActiveId(docData.id);
+                    }}
                     sx={{
-                      marginTop: ".5rem",
+                      borderRadius: "5px",
+                      marginTop: "1rem",
                       color: "gray",
                       lineHeight: "1.1rem",
-                      textAlign: "start",
+                      textAlignLast: "start",
+                      height: "8rem",
                     }}
                     dangerouslySetInnerHTML={{ __html: docData.docsDesc }}
                   />
@@ -212,4 +249,4 @@ const Docs = () => {
   );
 };
 
-export default Docs;
+export default NotesHome;

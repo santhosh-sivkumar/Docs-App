@@ -1,7 +1,6 @@
 import "./App.css";
-import EditDoc from "./components/EditDoc";
 
-import Docs from "./components/Docs";
+import NotesHome from "./components/NotesHome";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -12,8 +11,7 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Docs />} />
-      <Route element={<EditDoc />} path="/editDoc/:id" />
+      <Route path="/" element={<NotesHome />} />
     </>
   )
 );
